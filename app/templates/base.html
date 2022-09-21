@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - API TEST - Contacts</title>
+      {% else %}
+      <title>Welcome to API TEST - Contacts</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>API TEST - Contacts: <a href="/index">Home</a>  <a href="/index">List Contacts</a>  <a href="/index">Search Contact</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
