@@ -8,8 +8,19 @@
       {% endif %}
     </head>
     <body>
-        <div>API TEST - Contacts: <a href="/index">Home</a>  <a href="/index">List Contacts</a>  <a href="/index">Search Contact</a></div>
+        <div>API TEST - Contacts: <a href="/index">Home</a>  <a href="/list">List Contacts</a>  <a href="/search">Search Contact</a>  <a href="/login">Login</a>
+                <a href="/contact/Pedro">Profile</a>
+        </div>
         <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </body>
 </html>
