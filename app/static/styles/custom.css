@@ -1,0 +1,219 @@
+ /* Based on https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
+
+.tableDecore{
+
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.tableDecore thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.tableDecore th,
+.tableDecore td {
+    padding: 12px 15px;
+}
+
+.tableDecore tbody tr {
+    border-bottom: thin solid #dddddd;
+}
+
+.tableDecore tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.tableDecore tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.tableDecore tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+.tableDecorePhone{
+    border-collapse: collapse;
+
+    font-size: 0.9em;
+    font-family: sans-serif;
+
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.tableDecorePhone thead tr {
+    background-color: #556158;
+    color: #ffffff;
+    text-align: left;
+}
+
+.tableDecorePhone th,
+.tableDecorePhone td {
+    padding: 10px 12px;
+}
+
+.tableDecorePhone tbody tr {
+    border-bottom: thin solid #2b332d;
+}
+
+.tableDecorePhone tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.tableDecorePhone tbody tr:last-of-type {
+    border-bottom: 2px solid #2b332d;
+}
+
+.tableDecorePhone tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+/*
+Based on https://code.tutsplus.com/tutorials/create-a-sticky-note-effect-in-5-easy-steps-with-css3-and-html5--net-13934
+*/
+
+h2 {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+p {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+
+.buttonDelete {
+  background-color: #f4511e;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.buttonDelete:hover {opacity: 1}
+
+.buttonUpdate{
+  background-color: #5fa370;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.buttonUpdate:hover {opacity: 1}
+
+/*
+Copied from https://www.w3schools.com/howto/howto_js_alert.asp
+*/
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #ffa500; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+input[type=text], select {
+  padding: 4px 10px;
+  margin: 4px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width : 250px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+
+  padding: 20px;
+}
+
+.headerT {
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+
+.menuItem {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.menuItem:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}

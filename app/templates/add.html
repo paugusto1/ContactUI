@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="headerT">API TEST - Add contact</h1>
+
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+      Contact API has support for Contacts with (O..N) numbers of emails, phone numbers and addresses.
+        To simplify the Client side it was considered that contact can have:
+        <br/> - A personal email.
+        <br/> - A personal phone.
+        <br/> - A work email.
+        <br/> - A work phone
+        <br/> - One address.
+        <br/><br/>API is considering Contacts from Brazil so phone numbers and Address should use brazilian patterns for those fields.
+
+    </div>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div style="width:100px; height:100px; position:absolute">
+        <p>
+            {{ form.firstName.label }}
+            {{ form.firstName(size=32) }}<br>
+            {% for error in form.firstName.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.lastName.label }}
+            {{ form.lastName(size=32) }}<br>
+            {% for error in form.lastName.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.dateOfBirth.label }}
+            {{ form.dateOfBirth(size=32) }}<br>
+            {% for error in form.dateOfBirth.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.profileImage.label }}
+            {{ form.profileImage(size=32) }}<br>
+            {% for error in form.profileImage.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.company.label }}
+            {{ form.company(size=32) }}<br>
+            {% for error in form.company.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.homePhone.label }}
+            {{ form.homePhone(size=32) }}<br>
+            {% for error in form.homePhone.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.workPhone.label }}
+            {{ form.workPhone(size=32) }}<br>
+            {% for error in form.workPhone.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        </div >
+        <div style="width:100px; height:100px; position:absolute ;left:500px" >
+        <p>
+            {{ form.postalCode.label }}
+            {{ form.postalCode(size=32) }}<br>
+            {% for error in form.postalCode.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.street.label }}
+            {{ form.street(size=50) }}<br>
+            {% for error in form.street.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.number.label }}
+            {{ form.number(size=50) }}<br>
+            {% for error in form.number.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.apartment.label }}
+            {{ form.apartment(size=32) }}<br>
+            {% for error in form.apartment.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.city.label }}
+            {{ form.city(size=32) }}<br>
+            {% for error in form.city.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.state.label }}
+            {{ form.state(size=32) }}<br>
+            {% for error in form.state.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.country.label }}
+            {{ form.country(size=32) }}<br>
+            {% for error in form.country.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.personalEmail.label }}
+            {{ form.personalEmail(size=32) }}<br>
+            {% for error in form.personalEmail.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.workEmail.label }}
+            {{ form.workEmail(size=32) }}<br>
+            {% for error in form.workEmail.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        </div>>
+
+        <div style="width:100px; height:100px; position:absolute ;top:900px" >
+        <p>{{ form.submit() }}</p>
+        </div>
+
+    </form>
+
+
+{% endblock %}

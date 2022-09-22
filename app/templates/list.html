@@ -1,14 +1,146 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Contact List</h1>
-    <form action="" method="post" novalidate>
+    <h1 class="headerT">API TEST - Contact List</h1>
         {{ form.hidden_tag() }}
 
-        <div id="listContact">
-           {{ info}}
+        {% for contact in contacts %}
+
+        <div>
+
+        <div style = "position:relative">
+
+        <table class="tableDecore">
+          <thead>
+              <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Date of Birth</th>
+                <th>Company</th>
+                <th>Image</th>
+                <th>Options</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="active-row">
+                <td>{{contact['personDetails']['lastName']}}</td>
+                <td>{{contact['personDetails']['firstName']}}</td>
+                <td>{{contact['personDetails']['dateOfBirth']}}</td>
+                <td>{{contact['company']}}</td>
+                <td><img src=" {{contact['profileImage']}} " onerror=this.src="https://i.stack.imgur.com/l60Hf.png" width="80" height="80"></td>
+                  <td>
+
+                          <button class="buttonUpdate" onclick="clickedUpdate(event,'{{contact['id']}}' )">Update</button>
+
+
+                          <button class="buttonDelete"  onclick="clickedDelete(event,'{{contact['id']}}' )">Delete</button>
+
+                  </td>
+              </tr>
+
+          </tbody>
+        </table>
         </div>
 
-        <p>{{ form.submit() }}</p>
-    </form>
+        <div style = "height:120px; position:relative; display: block;" >
+
+        <div style="width:100px; height:100px; position:absolute">
+        <table class="tableDecorePhone">
+          <thead>
+              <tr>
+                <th colspan="2">Phone Numbers</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="active-row">
+                <td>Type</td>
+                <td>Number</td>
+              </tr>
+
+              {% for number in contact['phoneNumber'] %}
+
+              <tr>
+                <td>{{number['type']}}</td>
+                <td>{{number['value']}}</td>
+              </tr>
+
+              {% endfor %}
+          </tbody>
+        </table>
+
+        </div>
+
+        <div style="width:100px; height:100px; position:absolute ;left:200px" >
+            <table class="tableDecorePhone">
+            <thead>
+              <tr>
+                <th colspan="2">Emails</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr class="active-row">
+                <td>Type</td>
+                <td>Email</td>
+              </tr>
+
+              {% for email in contact['email'] %}
+
+              <tr>
+                <td>{{email['type']}}</td>
+                <td>{{email['value']}}</td>
+              </tr>
+
+              {% endfor %}
+
+
+
+          </tbody>
+        </table>
+
+        </div>
+
+        <div style="width:300px; height:100px; position:absolute ;left:500px" >
+
+            <table class="tableDecorePhone">
+            <thead>
+              <tr>
+                <th colspan="2">Addresses</th>
+              </tr>
+          </thead>
+          <tbody>
+
+              {% for add in contact['address'] %}
+
+              <tr>
+                <td>{{add['street'] + ", " + add['apartment'] +", "+ add['city'] + ", " + add['state'] + ", " + add['postalCode'] + ", " + add['country']}}</td>
+              </tr>
+
+              {% endfor %}
+
+
+
+          </tbody>
+        </table>
+
+        </div>
+
+        <div style="width:100px; height:100px; position:absolute ;left:500px" >
+
+
+        </div>
+
+        </div>
+
+        <div style="clear:both"></div>
+
+
+
+
+        </div>
+
+
+
+
+        {% endfor %}
+
 {% endblock %}
