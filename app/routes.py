@@ -4,12 +4,14 @@ import flask
 from flask import render_template, request
 from flask_cors import cross_origin
 
-from app import app
+from app import app, csrf
 
 from flask import render_template, flash, redirect
 from app import app
-from app.forms import LoginForm, UpdateForm
+from app.forms import LoginForm, UpdateForm, SearchForm
 import urllib.request, json
+import requests
+
 #from app.table import table
 import pandas as pd
 
@@ -54,22 +56,12 @@ def listContacts():
 
     response = urllib.request.urlopen(url)
 
-
     data = response.read()
-    print(data)
-    print(type(data))
-    dict = json.loads(data)
-    print(dict[0]['personDetails'])
-    print(type(dict))
 
-    df = pd.DataFrame(dict)
-    table = df.to_html(index=False)
+    dict = json.loads(data)
 
     form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect('/index')
+
     return render_template('list.html', title='All contacts', form=form, contacts=dict)
 
 @app.route('/update/<contactId>', methods=['GET', 'POST'])
@@ -157,6 +149,8 @@ def updateContact(contactId):
                       )
 
     if form.validate_on_submit():
+
+
         return redirect('/index')
 
     response = flask.jsonify({'some': 'data'})
@@ -189,3 +183,66 @@ def addContact():
     response.headers.add('Access-Control-Allow-Origin', '*')
 
     return render_template('add.html', title='Update Contact', form = form)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+
+    form = SearchForm()
+
+    print(form.errors)
+
+    if form.is_submitted():
+        print("submitted")
+
+    if form.validate():
+        print("valid")
+
+    print(form.errors)
+
+    if form.validate_on_submit():
+        url = "http://127.0.0.1:8000/get-contacts/%s/%s" % (form.field.data, form.value.data)
+
+        response = urllib.request.urlopen(url)
+
+        data = response.read()
+
+        dict = json.loads(data)
+
+        form = LoginForm()
+
+        return render_template('list.html', title='Search results', form=form, contacts=dict, search = True)
+
+    return render_template('search.html', title='Search contacts', form=form)
+
+@app.route('/delete/<contactId>', methods=['GET', 'POST'])
+def deleteContact(contactId):
+
+    url = "http://127.0.0.1:8000/delete-contact/" + contactId
+
+    print(url)
+
+    response = requests.delete(url)
+
+    print(response.status_code)
+
+    if response.status_code == 200:
+        deleted = True
+    else:
+        deleted = False
+
+    url = "http://127.0.0.1:8000/get-contacts/all"
+
+    response = urllib.request.urlopen(url)
+
+    data = response.read()
+
+    dict = json.loads(data)
+
+    form = LoginForm()
+
+    return render_template('list.html', title='All contacts', form=form, contacts=dict, deleted = deleted)
+
+
+
+
+

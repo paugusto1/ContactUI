@@ -1,8 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ user.username }}!</h1>
-    {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    {% endfor %}
+    <div class="alert2">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';" ></span>
+
+        <h2>Hi. This is a client to test Contact API coded by Pedro Augusto Vicente using Flask framework.</h2>
+
+
+        <a href="https://github.com/paugusto1/ContactsAPI/tree/master" class="menuItem">API code</a>
+        <a href="https://github.com/paugusto1/ContactUI/tree/master" class="menuItem">Front end code</a>
+
+        <br/><br/><br/><br/>
+
+      Contact API has support for Contacts with (O..N) numbers of emails, phone numbers and addresses.
+        To simplify the Client side it was considered that contact can have:
+        <br/> - A personal email.
+        <br/> - A personal phone.
+        <br/> - A work email.
+        <br/> - A work phone
+        <br/> - One address.
+        <br/><br/>API is considering Contacts from Brazil so phone numbers and Address should use brazilian patterns for those fields.
+
+    </div>
 {% endblock %}

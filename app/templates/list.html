@@ -4,6 +4,26 @@
     <h1 class="headerT">API TEST - Contact List</h1>
         {{ form.hidden_tag() }}
 
+        {% if not contacts %}
+                <div class="alert">
+                      {% if search %}
+                         <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+                        Search returned empty
+                      {% else %}
+                            {% if deleted %}
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+                                Contact deleted
+                            {% else %}
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+                                No contacts saved
+                            {% endif %}
+                      {% endif %}
+
+                </div>
+        {% else %}
+
+
+
         {% for contact in contacts %}
 
         <div>
@@ -142,5 +162,7 @@
 
 
         {% endfor %}
+
+        {% endif %}
 
 {% endblock %}

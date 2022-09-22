@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, IntegerField, SelectField
 from wtforms.validators import DataRequired, URL, Optional, Email, NumberRange
 
 
@@ -16,8 +16,10 @@ class UpdateForm(FlaskForm):
     dateOfBirth = DateField('Birthday', validators=[Optional()])
     profileImage = StringField('Profile Image URL', validators=[Optional(), URL()])
 
-    homePhone = StringField('Home Phone Number', validators=[Optional()], render_kw={'pattern' : '^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$'})
-    workPhone = StringField('Work Phone Number', validators=[Optional()], render_kw={'pattern' : '^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$'})
+    homePhone = StringField('Home Phone Number', validators=[Optional()],
+                            render_kw={'pattern' : '^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$'})
+    workPhone = StringField('Work Phone Number', validators=[Optional()],
+                            render_kw={'pattern' : '^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$'})
     personalEmail = StringField('Personal Email', validators=[Email()])
     workEmail = StringField('Work Email', validators=[Email()])
 
@@ -25,11 +27,19 @@ class UpdateForm(FlaskForm):
 
     apartment = StringField('Apartament', validators=[Optional()])
     street = StringField('Street', validators=[Optional()], render_kw={'disabled':''})
-    number = IntegerField('Number', validators=[DataRequired(), NumberRange(min=0)])
+    number = IntegerField('Number', validators=[Optional(), NumberRange(min=0)])
     city = StringField('City', validators=[Optional()], render_kw={'disabled':''})
     state = StringField('State', validators=[Optional()], render_kw={'disabled':''})
-    postalCode = StringField('Postal Code', validators=[DataRequired()], render_kw={'pattern' : '\d{5}-?\d{3}'})
+    postalCode = StringField('Postal Code', validators=[Optional()], render_kw={'pattern' : '\d{5}-?\d{3}'})
     country = StringField('Country', validators=[Optional()], render_kw={'disabled':''})
 
     submit = SubmitField('Save')
+
+class SearchForm(FlaskForm):
+
+    value = StringField('Value', validators=[DataRequired()])
+    field = SelectField('Field', choices=[('phone', 'Phone Number'), ('email', 'Email'),
+                                          ('city', 'City'), ('state', 'State')])
+
+    submit = SubmitField('Search')
 

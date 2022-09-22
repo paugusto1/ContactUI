@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="headerT">API TEST - Search contact</h1>
+
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+        API is considering Contacts from Brazil. For state search use 2 letters representation.
+    </div>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        <div>
+        <p>
+            {{ form.value.label }}
+            {{ form.value(size=32) }}<br>
+            {% for error in form.value.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.field.label }}
+            {{ form.field(size=1) }}
+        </p>
+
+        </div>
+
+        <p>{{ form.submit() }}</p>
+
+    </form>
+
+
+{% endblock %}

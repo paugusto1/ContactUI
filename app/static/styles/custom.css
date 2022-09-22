@@ -133,7 +133,15 @@ Copied from https://www.w3schools.com/howto/howto_js_alert.asp
 /* The alert message box */
 .alert {
   padding: 20px;
-  background-color: #ffa500; /* Red */
+  background-color: #ffa500;
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The alert message box */
+.alert2 {
+  padding: 20px;
+  background-color: #4CAF50;
   color: white;
   margin-bottom: 15px;
 }
@@ -182,7 +190,7 @@ input[type=submit]:hover {
 div {
   border-radius: 5px;
 
-  padding: 20px;
+  padding: 2px;
 }
 
 .headerT {
