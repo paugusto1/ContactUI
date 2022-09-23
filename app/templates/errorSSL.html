@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="alert3">
+
+            <h2>Ops! Sadly this demo is deployed with no SSL certificate. This blocks POST requests needed to create/update contacts :( </h2>
+
+            <br/>
+            However you still can use list, search and delete function. Also, you can also download both API and client and test locally (same DB will be used):
+            <br/><br/>
+            <a href="https://github.com/paugusto1/ContactsAPI/tree/master" class="buttonDelete">API code</a>
+            <a href="https://github.com/paugusto1/ContactUI/tree/master" class="buttonDelete">Front end code</a>
+
+    </div>
+
+    <div class="alert">
+
+            This would be the URL and JSON used for the operation.<br/><br/>
+
+            {{ url }} <br/><br/>
+
+            {{ contact }}
+
+    </div>
+{% endblock %}

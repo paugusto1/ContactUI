@@ -1,9 +1,9 @@
+import ssl
 from datetime import datetime
 
 import flask
 from flask import render_template, request
 from flask_cors import cross_origin
-
 from app import application, csrf
 
 from flask import render_template, flash, redirect
@@ -12,17 +12,17 @@ from app.forms import LoginForm, UpdateForm, SearchForm, CreateForm
 import urllib.request, json
 import requests
 
-#from app.table import table
-import pandas as pd
-
 from modelsClasses import Contact, PersonDetails, EmailSingle, PhoneNumberSingle, AddressSingle, Email, PhoneNumber, \
     Address
 
-URL = 'https://6ahjvquitxcghde3f4jihyjwcy0vqnov.lambda-url.us-east-1.on.aws'
-#URL = 'http://127.0.0.1:8000'
+#Production API URL
+#URL = 'https://6ahjvquitxcghde3f4jihyjwcy0vqnov.lambda-url.us-east-1.on.aws'
+
+#TEST API URL (Same DB)
+URL = 'http://127.0.0.1:8000'
 
 def getContactFromForm(form):
-    print(form.dateOfBirth.data.strftime(format = '%Y-%m-%d'))
+
     personDetail = PersonDetails(firstName=form.firstName.data, lastName=form.lastName.data,
                                  dateOfBirth=form.dateOfBirth.data.strftime(format = '%Y-%m-%d'))
 
@@ -82,23 +82,6 @@ def index():
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
 
-@application.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect('/index')
-    return render_template('login.html', title='Sign In', form=form)
-
-@application.route('/contact/<contactname>')
-def user(contactname):
-    user = contactname
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('contact.html', user=user, posts=posts)
 
 @application.route('/list', methods=['GET', 'POST'])
 def listContacts():
@@ -127,19 +110,8 @@ def updateContact(contactId):
 
     form = UpdateForm()
 
-    print(form.errors)
-
-    if form.is_submitted():
-        print("submitted")
-
-    if form.validate():
-        print("valid")
-
-    print(form.errors)
-
     if request.method == 'POST':
         t = request.form
-        print(t)
 
 
     date = datetime.strptime(dict[0]['personDetails']['dateOfBirth'], '%Y-%m-%d')
@@ -201,14 +173,15 @@ def updateContact(contactId):
 
     if form.validate_on_submit():
 
-        url = URL+ "/update-contact/"
+        url = URL+ "/update-contact/" + str(contactId)
 
         newContact = getContactFromForm(form)
         newContact.id = contactId
 
-        print(newContact.json())
-
-        response = requests.post(url, newContact.json())
+        try:
+            response = requests.put(url, newContact.json())
+        except:
+            return render_template('errorSSL.html', title='SSL error', contact=newContact.json(), url = url)
 
         if response.status_code == 200:
             form = LoginForm()
@@ -229,29 +202,17 @@ def addContact():
 
     form = CreateForm()
 
-    print(form.errors)
-
-    if form.is_submitted():
-        print("submitted")
-
-    if form.validate():
-        print("valid")
-
-    print(form.errors)
-
-    print(form.street)
-
     if form.validate_on_submit():
 
         url = URL+ "/create-contact/"
 
         newContact = getContactFromForm(form)
 
-        print(newContact.json())
+        try:
+            response = requests.post(url, newContact.json())
+        except:
+            return render_template('errorSSL.html', title='SSL error', contact=newContact.json(), url = url)
 
-        response = requests.post(url, newContact.json(),  verify=False)
-
-        print(response.text)
 
         if response.status_code == 200:
             form = LoginForm()
@@ -270,16 +231,6 @@ def addContact():
 def search():
 
     form = SearchForm()
-
-    print(form.errors)
-
-    if form.is_submitted():
-        print("submitted")
-
-    if form.validate():
-        print("valid")
-
-    print(form.errors)
 
     if form.validate_on_submit():
         url = URL+ "/get-contacts/%s/%s" % (form.field.data, form.value.data)
@@ -301,11 +252,8 @@ def deleteContact(contactId):
 
     url = URL+ "/delete-contact/" + contactId
 
-    print(url)
-
     response = requests.delete(url)
 
-    print(response.status_code)
 
     if response.status_code == 200:
         deleted = True
@@ -323,6 +271,18 @@ def deleteContact(contactId):
     form = LoginForm()
 
     return render_template('list.html', title='All contacts', form=form, contacts=dict, deleted = deleted)
+
+#For test only
+@application.route('/reset', methods=['GET', 'POST'])
+def resetDB():
+
+    url = URL + "/populate-db/test-only"
+
+    response = urllib.request.urlopen(url)
+
+    data = response.read()
+
+    return render_template('index.html', title='Database reset', reset=True)
 
 
 

@@ -7,10 +7,15 @@
         <h2>Hi. This is a client to test Contact API coded by Pedro Augusto Vicente using Flask framework.</h2>
 
 
-        <a href="https://github.com/paugusto1/ContactsAPI/tree/master" class="menuItem">API code</a>
-        <a href="https://github.com/paugusto1/ContactUI/tree/master" class="menuItem">Front end code</a>
+        <a href="https://github.com/paugusto1/ContactsAPI/tree/master" class="buttonDelete">API code</a>
+        <a href="https://github.com/paugusto1/ContactUI/tree/master" class="buttonDelete">Front end code</a>
 
-        <br/><br/><br/><br/>
+        <br/><br/>
+
+        For a visual description of the API check:<br/><br/>
+        <a href="https://6ahjvquitxcghde3f4jihyjwcy0vqnov.lambda-url.us-east-1.on.aws/docs" class="buttonDelete">API Scheme</a>
+
+        <br/><br/>
 
       Contact API has support for Contacts with (O..N) numbers of emails, phone numbers and addresses.
         To simplify the Client side it was considered that contact can have:
@@ -35,6 +40,13 @@
             <div class="alert">
                 <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
                 User updated!
+            </div>
+    {% endif %}
+
+    {% if reset %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+                Database default!
             </div>
     {% endif %}
 {% endblock %}

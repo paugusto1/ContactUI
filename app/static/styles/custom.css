@@ -146,6 +146,16 @@ Copied from https://www.w3schools.com/howto/howto_js_alert.asp
   margin-bottom: 15px;
 }
 
+/* The alert message box */
+.alert3 {
+  width: 400px;
+  height: 350px;
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  margin-bottom: 15px;
+}
+
 /* The close button */
 .closebtn {
   margin-left: 15px;
