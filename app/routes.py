@@ -4,10 +4,10 @@ import flask
 from flask import render_template, request
 from flask_cors import cross_origin
 
-from app import app, csrf
+from app import application, csrf
 
 from flask import render_template, flash, redirect
-from app import app
+from app import application
 from app.forms import LoginForm, UpdateForm, SearchForm, CreateForm
 import urllib.request, json
 import requests
@@ -18,6 +18,8 @@ import pandas as pd
 from modelsClasses import Contact, PersonDetails, EmailSingle, PhoneNumberSingle, AddressSingle, Email, PhoneNumber, \
     Address
 
+URL = 'https://6ahjvquitxcghde3f4jihyjwcy0vqnov.lambda-url.us-east-1.on.aws'
+#URL = 'http://127.0.0.1:8000'
 
 def getContactFromForm(form):
     print(form.dateOfBirth.data.strftime(format = '%Y-%m-%d'))
@@ -64,8 +66,8 @@ def getContactFromForm(form):
 
 
 
-@app.route('/')
-@app.route('/index')
+@application.route('/')
+@application.route('/index')
 def index():
     user = {'username': 'Miguel'}
     posts = [
@@ -80,7 +82,7 @@ def index():
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
 
-@app.route('/login', methods=['GET', 'POST'])
+@application.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -89,7 +91,7 @@ def login():
         return redirect('/index')
     return render_template('login.html', title='Sign In', form=form)
 
-@app.route('/contact/<contactname>')
+@application.route('/contact/<contactname>')
 def user(contactname):
     user = contactname
     posts = [
@@ -98,10 +100,10 @@ def user(contactname):
     ]
     return render_template('contact.html', user=user, posts=posts)
 
-@app.route('/list', methods=['GET', 'POST'])
+@application.route('/list', methods=['GET', 'POST'])
 def listContacts():
 
-    url = "http://127.0.0.1:8000/get-contacts/all"
+    url = URL + "/get-contacts/all"
 
     response = urllib.request.urlopen(url)
 
@@ -113,10 +115,10 @@ def listContacts():
 
     return render_template('list.html', title='All contacts', form=form, contacts=dict)
 
-@app.route('/update/<contactId>', methods=['GET', 'POST'])
+@application.route('/update/<contactId>', methods=['GET', 'POST'])
 def updateContact(contactId):
 
-    url = "http://127.0.0.1:8000/get-contacts/id/" + contactId
+    url = URL+ "/get-contacts/id/" + contactId
 
     response = urllib.request.urlopen(url)
 
@@ -199,7 +201,7 @@ def updateContact(contactId):
 
     if form.validate_on_submit():
 
-        url = "http://127.0.0.1:8000/update-contact/"
+        url = URL+ "/update-contact/"
 
         newContact = getContactFromForm(form)
         newContact.id = contactId
@@ -222,7 +224,7 @@ def updateContact(contactId):
 
     return render_template('update.html', title='Update Contact', form = form, contacts=dict)
 
-@app.route('/add', methods=['GET', 'POST'])
+@application.route('/add', methods=['GET', 'POST'])
 def addContact():
 
     form = CreateForm()
@@ -241,13 +243,13 @@ def addContact():
 
     if form.validate_on_submit():
 
-        url = "http://127.0.0.1:8000/create-contact/"
+        url = URL+ "/create-contact/"
 
         newContact = getContactFromForm(form)
 
         print(newContact.json())
 
-        response = requests.post(url, newContact.json())
+        response = requests.post(url, newContact.json(),  verify=False)
 
         print(response.text)
 
@@ -264,7 +266,7 @@ def addContact():
 
     return render_template('add.html', title='Update Contact', form = form)
 
-@app.route('/search', methods=['GET', 'POST'])
+@application.route('/search', methods=['GET', 'POST'])
 def search():
 
     form = SearchForm()
@@ -280,7 +282,7 @@ def search():
     print(form.errors)
 
     if form.validate_on_submit():
-        url = "http://127.0.0.1:8000/get-contacts/%s/%s" % (form.field.data, form.value.data)
+        url = URL+ "/get-contacts/%s/%s" % (form.field.data, form.value.data)
 
         response = urllib.request.urlopen(url)
 
@@ -294,10 +296,10 @@ def search():
 
     return render_template('search.html', title='Search contacts', form=form)
 
-@app.route('/delete/<contactId>', methods=['GET', 'POST'])
+@application.route('/delete/<contactId>', methods=['GET', 'POST'])
 def deleteContact(contactId):
 
-    url = "http://127.0.0.1:8000/delete-contact/" + contactId
+    url = URL+ "/delete-contact/" + contactId
 
     print(url)
 
@@ -310,7 +312,7 @@ def deleteContact(contactId):
     else:
         deleted = False
 
-    url = "http://127.0.0.1:8000/get-contacts/all"
+    url = URL+ "/get-contacts/all"
 
     response = urllib.request.urlopen(url)
 

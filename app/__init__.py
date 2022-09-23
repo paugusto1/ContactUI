@@ -3,10 +3,14 @@ from config import Config
 from flask_cors import CORS
 from flask_wtf import CSRFProtect
 
-app = Flask(__name__)
-app.config.from_object(Config)
-CORS(app)
+application = Flask(__name__)
+
+if __name__ == "__main__":
+    application.run(ssl_context='adhoc')
+
+application.config.from_object(Config)
+CORS(application)
 csrf = CSRFProtect()
-csrf.init_app(app)
+csrf.init_app(application)
 
 from app import routes
