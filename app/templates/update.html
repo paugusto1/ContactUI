@@ -13,8 +13,18 @@
         <br/> - A work phone
         <br/> - One address.
         <br/><br/>API is considering Contacts from Brazil so phone numbers and Address should use brazilian patterns for those fields.
+        <br/> - For postal code, can be used as examples 13179214, 13179211. Format XXXXXXXX (numbers only).
+        <br/> - For phone numbers, use XXXXXXXXX (numbers only).
 
     </div>
+
+    {% if error %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
+                {{ error }}
+            </div>
+    {% endif %}
+
     <form action="" method="post">
         {{ form.hidden_tag() }}
 
@@ -140,7 +150,7 @@
 
         </div>
 
-        <div style="width:100px; height:100px; position:absolute ;top:900px" >
+        <div style="width:100px; height:100px; position:absolute ;top:1000px" >
         <p>{{ form.submit() }}</p>
         </div>
 

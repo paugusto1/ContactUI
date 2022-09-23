@@ -8,12 +8,61 @@ from app import app, csrf
 
 from flask import render_template, flash, redirect
 from app import app
-from app.forms import LoginForm, UpdateForm, SearchForm
+from app.forms import LoginForm, UpdateForm, SearchForm, CreateForm
 import urllib.request, json
 import requests
 
 #from app.table import table
 import pandas as pd
+
+from modelsClasses import Contact, PersonDetails, EmailSingle, PhoneNumberSingle, AddressSingle, Email, PhoneNumber, \
+    Address
+
+
+def getContactFromForm(form):
+    print(form.dateOfBirth.data.strftime(format = '%Y-%m-%d'))
+    personDetail = PersonDetails(firstName=form.firstName.data, lastName=form.lastName.data,
+                                 dateOfBirth=form.dateOfBirth.data.strftime(format = '%Y-%m-%d'))
+
+    emails = []
+
+    if form.personalEmail.data != '':
+        emailP = EmailSingle(type='PERSONAL', value=form.personalEmail.data)
+        emails.append(emailP)
+    if form.workEmail.data != '':
+        emailW = EmailSingle(type='WORK', value=form.personalEmail.data)
+        emails.append(emailW)
+
+    emailL = Email(__root__=emails)
+
+    phones = []
+
+    if form.homePhone.data != '':
+        phoneP = PhoneNumberSingle(type='PERSONAL', value=form.homePhone.data)
+        phones.append(phoneP)
+    if form.workPhone.data != '':
+        phoneW = PhoneNumberSingle(type='WORK', value=form.workPhone.data)
+        phones.append(phoneW)
+
+    phoneL = PhoneNumber(__root__=phones)
+
+    addresses = []
+
+    if form.postalCode.data != '':
+        add = AddressSingle(apartment=form.apartment.data, street=form.street.data + ',' + str(form.number.data),
+                            city=form.city.data, state=form.state.data, postalCode=form.postalCode.data,
+                            country=form.country.data)
+
+        addresses.append(add)
+
+    addL = Address(__root__=addresses)
+
+    newContact = Contact(id=1, personDetails=personDetail, company=form.company.data,
+                         profileImage=form.profileImage.data, email=emailL, phoneNumber=phoneL, address=addL)
+
+    return newContact
+
+
 
 @app.route('/')
 @app.route('/index')
@@ -150,8 +199,23 @@ def updateContact(contactId):
 
     if form.validate_on_submit():
 
+        url = "http://127.0.0.1:8000/update-contact/"
 
-        return redirect('/index')
+        newContact = getContactFromForm(form)
+        newContact.id = contactId
+
+        print(newContact.json())
+
+        response = requests.post(url, newContact.json())
+
+        if response.status_code == 200:
+            form = LoginForm()
+
+            return render_template('index.html', title='Contact Updated', form=form, updated=True)
+
+        else:
+            return render_template('update.html', title='Update Contact', form=form, contacts=dict, error=response.content)
+
 
     response = flask.jsonify({'some': 'data'})
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -161,7 +225,7 @@ def updateContact(contactId):
 @app.route('/add', methods=['GET', 'POST'])
 def addContact():
 
-    form = UpdateForm()
+    form = CreateForm()
 
     print(form.errors)
 
@@ -173,11 +237,27 @@ def addContact():
 
     print(form.errors)
 
-
-    form = UpdateForm()
+    print(form.street)
 
     if form.validate_on_submit():
-        return redirect('/index')
+
+        url = "http://127.0.0.1:8000/create-contact/"
+
+        newContact = getContactFromForm(form)
+
+        print(newContact.json())
+
+        response = requests.post(url, newContact.json())
+
+        print(response.text)
+
+        if response.status_code == 200:
+            form = LoginForm()
+
+            return render_template('index.html', title='Contact Added', form=form, added=True)
+
+        else:
+            return render_template('add.html', title='Add Contact', form=form, contacts=dict, error = response.content)
 
     response = flask.jsonify({'some': 'data'})
     response.headers.add('Access-Control-Allow-Origin', '*')
