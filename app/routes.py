@@ -1,4 +1,5 @@
 import ssl
+import unicodedata
 from datetime import datetime
 
 import flask
@@ -16,7 +17,7 @@ from modelsClasses import Contact, PersonDetails, EmailSingle, PhoneNumberSingle
     Address
 
 #Production API URL
-#URL = 'https://6ahjvquitxcghde3f4jihyjwcy0vqnov.lambda-url.us-east-1.on.aws'
+URL = 'https://6ahjvquitxcghde3f4jihyjwcy0vqnov.lambda-url.us-east-1.on.aws'
 
 #TEST API URL (Same DB)
 URL = 'http://127.0.0.1:8000'
@@ -69,18 +70,7 @@ def getContactFromForm(form):
 @application.route('/')
 @application.route('/index')
 def index():
-    user = {'username': 'Miguel'}
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    return render_template('index.html', title='Home')
 
 
 @application.route('/list', methods=['GET', 'POST'])
@@ -101,7 +91,7 @@ def listContacts():
 @application.route('/update/<contactId>', methods=['GET', 'POST'])
 def updateContact(contactId):
 
-    url = URL+ "/get-contacts/id/" + contactId
+    url = URL + "/get-contacts/id/" + contactId
 
     response = urllib.request.urlopen(url)
 
@@ -233,7 +223,7 @@ def search():
     form = SearchForm()
 
     if form.validate_on_submit():
-        url = URL+ "/get-contacts/%s/%s" % (form.field.data, form.value.data)
+        url = URL+ "/get-contacts/%s/%s" % (form.field.data, remove_accents(form.value.data))
 
         response = urllib.request.urlopen(url)
 
@@ -283,6 +273,14 @@ def resetDB():
     data = response.read()
 
     return render_template('index.html', title='Database reset', reset=True)
+
+def remove_accents(input_str):
+    """
+    remove_accents Normalize strings to avoid issues.
+    :return: String normalized.
+    """
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
 
 

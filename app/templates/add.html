@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="headerT">API TEST - Add contact</h1>
+    <h1 class="headerT">API TEST - Add contact (SLL Cert necessary)</h1>
 
     <div class="alert">
       <span class="closebtn" onclick="this.parentElement.style.display='none';"></span>
@@ -15,6 +15,7 @@
         <br/><br/>API is considering Contacts from Brazil so phone numbers and Address should use brazilian patterns for those fields.
         <br/> - For postal code, can be used as examples 13179214, 13179211. Format XXXXXXXX (numbers only).
         <br/> - For phone numbers, use XXXXXXXXX (numbers only).
+        <br/> - Address will be filled up automatically when you provide a valid postal code.
 
     </div>
 
@@ -148,10 +149,8 @@
             {% endfor %}
         </p>
 
-        </div>
+            <p>{{ form.submit() }}</p>
 
-        <div style="width:100px; height:100px; position:absolute ;top:1000px;" >
-        <p>{{ form.submit() }}</p>
         </div>
 
     </form>
